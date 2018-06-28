@@ -1,0 +1,56 @@
+{
+  "name": "ewf-coo-demo",
+  "version": "0.1.0",
+  "description": "demonstration of ewf-coo",
+  "main": "build/ts/index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "start-demo": "npm run build-ts && node build/ts/index",
+    "build-ts": "rm -rf build/ts && node_modules/typescript/bin/tsc && cp src/types/*.d.ts build/ts/types/",
+    "start-ganache": "ganache-cli -m 'chalk park staff buzz chair purchase wise oak receive avoid avoid home' -g 0 -l 80000000 -e 1000000 -a 20",
+    "parity-docker": "docker run -p 8180:8180 -p 8545:8545 -p 8546:8546 -v $(pwd)/test/chains:$(pwd)/test/chains parity/parity:v1.11.1 --jsonrpc-apis all --logging=3 --jsonrpc-interface=all --ws-interface=all --chain=dev --gas-cap=8000000 --gasprice 0  --reseal-min-period 0   --gas-floor-target 8700000  --tracing on"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/energywebfoundation/ewf-coo-demo.git"
+  },
+  "author": "slock.it GmbH",
+  "license": "ISC",
+  "dependencies": {
+    "@types/core-js": "^0.9.43",
+    "@types/googlemaps": "^3.30.8",
+    "awesome-typescript-loader": "^3.3.0",
+    "core-js": "^2.5.1",
+    "css-loader": "^0.28.10",
+    "ethereumjs-tx": "^1.3.4",
+    "ewf-coo": "git+https://github.com/energywebfoundation/ewf-coo.git",
+    "ewf-coo-matcher": "git+https://github.com/energywebfoundation/ewf_coo_matcher.git",
+    "http-server": "^0.11.1",
+    "live-server": "^1.2.0",
+    "node-sass": "^4.7.2",
+    "sass-loader": "^6.0.7",
+    "scrypt": "^6.0.3",
+    "source-map-loader": "^0.2.3",
+    "style-loader": "^0.20.3",
+    "tslint": "^5.8.0",
+    "tslint-microsoft-contrib": "^5.0.1",
+    "typescript": "^2.6.1",
+    "web3": "^1.0.0-beta.34",
+    "webpack-dev-server": "^2.9.4",
+    "write-json-file": "^2.3.0"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.1.2",
+    "@types/mocha": "^2.2.48",
+    "@types/node": "^9.4.5",
+    "chai": "^4.1.2",
+    "ethers": "^3.0.17",
+    "ganache-cli": "^6.1.0",
+    "mocha": "^5.0.1",
+    "solc": "^0.4.23",
+    "typescript": "^2.7.1",
+    "winston": "^3.0.0"
+  }
+}
