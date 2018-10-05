@@ -73,7 +73,7 @@ Onboard the user <code>John Doe</code> working for the <code>UserAdmin Organizat
 <br>"surname": "Doe",
 <br>"organization": "UserAdmin Organization",
 <br>"street": "Main Street",
-<br>"number": 1,
+<br>"number": "1",
 <br>"zip": "01234",
 <br>"city": "Anytown",
 <br>"country": "USA",
@@ -101,7 +101,7 @@ usage: command to onboard a new consuming asset
 * <code>zip</code>: the zipcode of the city where the asset is located
 * <code>city</code>: the city where the asset is located
 * <code>street</code>: the street where the asset is located
-* <code>houseNumber</code>: the housenumber of the asset
+* <code>houseNumber</code>: the housenumber of the asset as string
 * <code>gpsLatitude</code>: the latitude of the asset as string
 * <code>gpsLongitude</code>: the longitude of the asset as string
 * <code>maxCapacitySet</code>: flag if the maximal capacity is set
@@ -130,7 +130,7 @@ The asset is located in <code>Main Street 11, 01234 Anytown, AnyState, USA</code
 <br>"zip": "01234",
 <br>"city": "Anytown",
 <br>"street": "Main Street",
-<br>"houseNumber": 11,
+<br>"houseNumber": "11",
 <br>"gpsLatitude": "0",
 <br>"gpsLongitude": "0",
 <br>"maxCapacitySet": true,
@@ -155,7 +155,7 @@ usage: command to onboard a new producing asset
 * <code>zip</code>: zipcode of the city where the asset is located
 * <code>city</code>: city where the asset is located
 * <code>street</code>: street where the asset is located
-* <code>houseNumber</code>: housenumber where the asset is located
+* <code>houseNumber</code>: housenumber where the asset is located as string
 * <code>gpsLatitude</code>: latitude of the asset as string
 * <code>gpsLongitude</code>: longitude of the asset as string
 * <code>assetType</code>: Type of asset as string (Wind,
@@ -195,7 +195,7 @@ The asset is located in <code>Main Street 11, 01234 Anytown, AnyState, USA</code
 <br>zip": "01234",
 <br>city": "Anytown",
 <br>street": "Main Street",
-<br>houseNumber": 10,
+<br>houseNumber": "10",
 <br>gpsLatitude": "0",
 <br>gpsLongitude": "0",
 <br>assetType": "BiomassGas",
