@@ -15,15 +15,22 @@
 //
 
 // tslint:disable-next-line:missing-jsdoc
-import { BlockchainProperties, AssetType, Compliance, ProducingAsset, ProducingAssetProperties, AssetProducingLogicTruffleBuild } from 'ewf-coo'
+import { BlockchainProperties, AssetType, Compliance, ProducingAsset, ProducingAssetProperties, AssetProducingLogicTruffleBuild, User, UserLogicTruffleBuild } from 'ewf-coo'
 import * as parse from 'csv-parse'
 import * as fs from 'fs'
+import { UserProperties } from 'ewf-coo/build/ts/blockchain-facade/User'
 
 const Web3 = require('web3')
 
 let blockchainProperties: BlockchainProperties
 let web3
 const parseUser = parse({ from: 2, delimiter: ';' }, async function (err, allData) { })
+
+interface ExtraUserData extends UserProperties {
+    privateKey?: string
+}
+
+const newOrganizations = {}
 
 const producingAssetsToOnboard: ProducingAssetProperties[] = []
 
@@ -34,7 +41,8 @@ const parseUserCSV = async (): Promise<any> => {
             .pipe(parse({ from: 2, delimiter: ';' }, function (err, allData) { }))
             .on('data', async (data) => {
 
-                const owner = data[0]
+                console.log(data)
+                let owner = data[0]
                 const assetTypeRaw = data[1]
                 const capacityWh = Number(String(data[2]).replace(',', '')) * 1000
                 const country = data[3]
@@ -49,6 +57,7 @@ const parseUserCSV = async (): Promise<any> => {
                 const publicSupport = data[12]
                 const otherGreenAttributes = data[13]
                 const smartMeter = data[14]
+                const organization = data[15]
 
                 let aType
                 switch (String(assetTypeRaw)) {
@@ -75,6 +84,73 @@ const parseUserCSV = async (): Promise<any> => {
                         break
                     default:
                         comp = Compliance.none
+                }
+
+                /*
+                let ethAccount
+                if (owner === '') {
+                    console.log('found empty owner!')
+
+                    //       owner = '0x33496f621350cea01b18ea5b5c43c6c233c3f72d'
+
+                    ethAccount = web3.eth.accounts.create()
+                    console.log('created new owner-account:')
+                    console.log('address: ' + ethAccount.address)
+                    console.log('privateKey: ' + ethAccount.privateKey)
+                    owner = ethAccount.address
+                    const userProps: UserProperties = {
+                        accountAddress: ethAccount.address,
+                        firstName: String(' '),
+                        surname: String(organization),
+                        organization: String(organization),
+                        street: String(street),
+                        number: String(houseNumber),
+                        zip: String(zip),
+                        city: String(city),
+                        country: String(country),
+                        state: 'state',
+                        roles: 16
+                    }
+
+                    console.log('trying to onboard user')
+                    await User.CREATE_USER_RAW(userProps, blockchainProperties)
+                    console.log('new user onboarded')
+
+                    newOrganizations[organization] = ethAccount.address
+                    console.log('orgs:')
+                    console.log(newOrganizations)
+                }
+   */
+
+                if (owner === '') {
+
+                    //       owner = '0x33496f621350cea01b18ea5b5c43c6c233c3f72d'
+
+                    const ethAccount = web3.eth.accounts.create()
+                    owner = !newOrganizations[organization] ? ethAccount.address : newOrganizations[organization].accountAddress
+
+                    // owner = newOrganizations.hasOwnProperty(organization) ? organization : ethAccount.address
+                    // owner = newOrganizations[organization] ? newOrganizations[organization] : ethAccount.address
+                    // owner = ethAccount.address
+
+                    const userProps: ExtraUserData = {
+                        accountAddress: ethAccount.address,
+                        privateKey: ethAccount.privateKey,
+                        firstName: String(' '),
+                        surname: String(organization),
+                        organization: String(organization),
+                        street: String(street),
+                        number: String(houseNumber),
+                        zip: String(zip),
+                        city: String(city),
+                        country: String(country),
+                        state: 'state',
+                        roles: 16
+                    }
+
+                    if (!newOrganizations[organization])
+                        newOrganizations[organization] = userProps
+
                 }
 
                 const assetProp: ProducingAssetProperties = {
@@ -109,27 +185,39 @@ const init = async () => {
 
     const contractConfig = JSON.parse(fs.readFileSync('contractConfig.json', 'utf-8').toString())
 
-    const configFile = JSON.parse(fs.readFileSync('config/ewf-config.json', 'utf-8').toString())
+    const connectionConfig = JSON.parse(fs.readFileSync('config.json', 'utf-8').toString())
 
     blockchainProperties = {
         web3: web3,
         producingAssetLogicInstance: new web3.eth.Contract((AssetProducingLogicTruffleBuild as any).abi, contractConfig.producingAssetLogic),
+        userLogicInstance: new web3.eth.Contract((UserLogicTruffleBuild as any).abi, contractConfig.userLogic),
+        assetAdminAccount: web3.eth.accounts.privateKeyToAccount('0x' + connectionConfig.privateKey).address,
+        topAdminAccount: web3.eth.accounts.privateKeyToAccount('0x' + connectionConfig.privateKey).address,
+        privateKey: connectionConfig.privateKey,
+        userAdmin: web3.eth.accounts.privateKeyToAccount('0x' + connectionConfig.privateKey).address
 
-        assetAdminAccount: web3.eth.accounts.privateKeyToAccount('0x' + configFile.topAdminPrivateKey).address,
-        topAdminAccount: web3.eth.accounts.privateKeyToAccount('0x' + configFile.topAdminPrivateKey).address,
-        privateKey: configFile.topAdminPrivateKey
     }
 }
 
 const main = async () => {
-    web3 = new Web3('http://localhost:8545')
+
+    const configFile = JSON.parse(fs.readFileSync('config.json', 'utf-8').toString())
+
+    web3 = new Web3(configFile.web3)
 
     await init()
 
+    console.log('init done')
     await parseUserCSV()
 
-    console.log('assets to onboard:' + producingAssetsToOnboard.length)
-    console.log('found already ' + await ProducingAsset.GET_ASSET_LIST_LENGTH(blockchainProperties) + ' assets!')
+    for (const index in newOrganizations) {
+
+        await User.CREATE_USER_RAW(newOrganizations[index], blockchainProperties)
+
+    }
+
+    //  console.log('assets to onboard:' + producingAssetsToOnboard.length)
+    //   console.log('found already ' + await ProducingAsset.GET_ASSET_LIST_LENGTH(blockchainProperties) + ' assets!')
 
     let i = 1
     for (const asset of producingAssetsToOnboard) {
@@ -138,18 +226,21 @@ const main = async () => {
         i += 1
         if (!await searchForAsset(asset)) {
             console.log('found undeployed asset')
-            console.log(asset)
+
+            // console.log(asset)
 
             await ProducingAsset.CREATE_ASSET_RAW(asset, blockchainProperties)
         }
     }
+
+    console.log(newOrganizations)
 
 }
 
 const searchForAsset = async (asset: ProducingAssetProperties): Promise<boolean> => {
 
     let result = false
-    const onboardingAssets = await ProducingAsset.GET_ALL_ASSET_OWNED_BY(asset.owner.toLocaleLowerCase(), blockchainProperties)
+    const onboardingAssets = await ProducingAsset.GET_ALL_ASSETS(blockchainProperties)
 
     for (const a of onboardingAssets) {
         result = (
