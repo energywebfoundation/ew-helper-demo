@@ -41,7 +41,6 @@
     "tslint-microsoft-contrib": "^5.0.1",
     "typescript": "^2.6.1",
     "web3": "^1.0.0-beta.34",
-    "webpack-dev-server": "^2.9.4",
     "write-json-file": "^2.3.0"
   },
   "devDependencies": {
