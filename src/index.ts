@@ -57,6 +57,7 @@ const main = async () => {
     await actionmodeController.doFlow()
     logger.info('Demo actions finished!')
     logger.info('UI: http://localhost:3000/' + CoOAddress)
+    process.exit()
 
 }
 
