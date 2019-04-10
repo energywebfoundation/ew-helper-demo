@@ -322,3 +322,19 @@ We want to pause the flow for <code>2</code> secondss
 Once all the actions are set within the config-file simply run <code>npm run start-demo</code>. It will freshly deploy all contracts and setup everything for you. After this is done, it will automatically run all the flow-actions. <br>
 <b>The demo application won't stop itself after the flowactions were finished.</b>
 
+## Blockchain client
+The blockchain client (ganache, parity) is expected to be reachble on http://blockchain:8545. For development purposes use your `/etc/hosts` to point blockchain to localhost.
+In order to deploy the contracts with a blockchain client which is not listening on http://blockchain:8545, replace the address in the folling files:
+
+- config.json
+- src/index.ts
+- src/startup/deployment.ts
+- node_modules/ewf-coo/build/ts/Deployment.js
+
+You may use `sed` to replace all at once:
+
+```
+sed -i 's/http:\/\/blockchain:8545/https:\/\/rpc.host.it\/chain/g' config.json src/index.ts src/startup/deployment.ts node_modules/ewf-coo/build/ts/Deployment.js
+```
+
+The Dockerfile does this already for the file in node_modules.
