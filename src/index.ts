@@ -24,7 +24,7 @@ const main = async () => {
     const configFile = JSON.parse(fs.readFileSync('config/ewf-config.json', 'utf-8').toString())
     const Web3 = require('web3')
 
-    const web3 = new Web3('http://localhost:8545')
+    const web3 = new Web3('http://blockchain:8545')
 
     logger.info('ewf-coo demo application started.')
 
@@ -50,13 +50,11 @@ const main = async () => {
     await writeJsonFile('contractConfig.json', configJSON)
 
     startMatcher()
-    //  uiStart()
-    //  console.log("http://localhost:3000/" + CoOAddress)
 
     const actionmodeController = new ActionModeController(web3)
     await actionmodeController.doFlow()
     logger.info('Demo actions finished!')
-    logger.info('UI: http://localhost:3000/' + CoOAddress)
+    logger.info('UI: http://frontend/' + CoOAddress)
     process.exit()
 
 }

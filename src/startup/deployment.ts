@@ -9,7 +9,7 @@ import { logger } from '..'
 let blockchainProperties: BlockchainProperties
 
 const Web3 = require('web3')
-const web3 = new Web3('http://localhost:8545')
+const web3 = new Web3('http://blockchain:8545')
 
 export const deployContracts = async () => {
     const configFile = JSON.parse(fs.readFileSync('config/ewf-config.json', 'utf-8').toString())

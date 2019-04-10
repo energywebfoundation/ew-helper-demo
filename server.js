@@ -30,14 +30,13 @@ app.get("/coo", (req, res, next) => {
 
 app.post("/coo", (req, res, next) => {
     console.log("Deploying CoO contracts")
-    const config = req.body.config
-    console.log(config)
-    fs.writeFile('config/ewf-config.json', JSON.stringify(config), function(err) {
+    fs.writeFile('config/ewf-config.json', JSON.stringify(req.body.config, null, 4), function(err) {
         if (err) {
             res.status(403).json("Couldn't write config on backend")
         }
     })
     exec('npm run start-demo', (err, stdout, stderr) => {
+        console.log(stdout)
         if (err) {
             res.status(500).json("Couldn't create CoO")
         } else {
