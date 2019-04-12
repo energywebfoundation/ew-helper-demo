@@ -6,7 +6,7 @@ web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"))
 
 var elasticsearch = require('elasticsearch');
 var elasticClient = new elasticsearch.Client({
-    host: 'es-kong'
+    host: 'elasticsearch:9200'
 })
 
 var express = require('express');
