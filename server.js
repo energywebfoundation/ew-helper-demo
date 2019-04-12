@@ -1,21 +1,27 @@
 fs = require('fs')
-Web3 = require("web3")
-
 const { exec } = require('child_process');
 
-var express = require("express");
-var app = express();
-
+Web3 = require('web3')
 web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"))
+
+var elasticsearch = require('elasticsearch');
+var elasticClient = new elasticsearch.Client({
+    host: 'es-kong'
+})
+
+var express = require('express');
+var app = express();
+const PORT = 3003
 
 app.use(express.json())
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE")
     next();
   });
-app.listen(3003, () => {
- console.log("Server running on port 3003");
+app.listen(PORT, () => {
+ console.log("Server running on port " + PORT);
 });
 
 app.get("/coo", (req, res, next) => {
@@ -81,3 +87,21 @@ app.post("/account", (req, res, next) => {
     })
 });
 
+app.put("/control", (req, res, next) => {
+    console.log(req.body)
+    addDocument(req.body)
+    res.json({
+        status: 'success'
+    })
+})
+
+function addDocument(data) {
+    indexName = 'charging-control'
+    docType = 'Command'
+    elasticClient.index({
+        index: indexName,
+        type: docType,
+        id: data['cs_id'],
+        body: data
+    })
+}
