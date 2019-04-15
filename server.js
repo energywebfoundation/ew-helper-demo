@@ -88,11 +88,13 @@ app.post("/account", (req, res, next) => {
 });
 
 app.put("/control", (req, res, next) => {
-    console.log(req.body)
     addDocument(req.body)
-    res.json({
-        status: 'success'
-    })
+    // give es some time to settle
+    setTimeout(() => {
+        res.json({
+            status: 'success'
+        })
+    }, 2000)
 })
 
 function addDocument(data) {
