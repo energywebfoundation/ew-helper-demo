@@ -50,7 +50,7 @@ app.post("/coo", (req, res, next) => {
                 if (err) {
                     res.status(404).json("CoO not yet migrated")
                 } else {
-                    res.json({coo: JSON.parse(data).coo})
+                    res.json(data)
                 }
             })
         }
