@@ -1,0 +1,27 @@
+{
+  "name": "ew-helper-demo",
+  "version": "1.0.0",
+  "description": "demonstration of ewf-coo",
+  "main": "build/ts/index.js",
+  "scripts": {
+    "start-demo": "npm run build-ts && node build/ts/index",
+    "build-ts": "rm -rf build/ts && node_modules/typescript/bin/tsc && cp src/types/*.d.ts build/ts/types/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/energywebfoundation/ew-helper-demo"
+  },
+  "author": "",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "@types/node": "^9.6.47",
+    "csv-parse": "^2.5.0",
+    "elasticsearch": "^15.4.1",
+    "ewf-coo": "git+https://github.com/energywebfoundation/ewf-coo.git",
+    "ewf-coo-matcher": "git+https://github.com/energywebfoundation/ewf_coo_matcher.git",
+    "typescript": "^2.6.1",
+    "web3": "1.0.0-beta.34",
+    "write-json-file": "^2.3.0",
+    "winston": "^3.0.0"
+  }
+}
