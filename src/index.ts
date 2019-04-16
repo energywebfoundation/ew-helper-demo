@@ -52,11 +52,13 @@ const main = async () => {
     startMatcher()
 
     const actionmodeController = new ActionModeController(web3)
-    await actionmodeController.doFlow().catch((e) => (
+    await actionmodeController.doFlow()
+    /*.catch((e) => (
         logger.error(e)
     )).then(() => (
         process.exit(-1)
     ))
+    */
     logger.info('Demo actions finished!')
     logger.info('UI: http://frontend/' + CoOAddress)
     process.exit()
