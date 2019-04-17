@@ -24,7 +24,7 @@ const main = async () => {
     const configFile = JSON.parse(fs.readFileSync('config/ewf-config.json', 'utf-8').toString())
     const Web3 = require('web3')
 
-    const web3 = new Web3('http://blockchain:8545')
+    const web3 = new Web3('https://rpc.slock.it/tobalaba')
 
     logger.info('ewf-coo demo application started.')
 
