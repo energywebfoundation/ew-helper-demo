@@ -233,8 +233,8 @@ usage: command to onboard a new demand
 * <code>matcher</code>: ethereum-address of the matcher (matcher has to have to rights)
 
 #### example
-We want to create a new demand. This is the very basic one, so all demand Properties are disabled <code>enabledProperties": [false, false, false, false, false, false, false, false, false, false]</code>. This demand will accept energy from any originator, any assetType, any compliance, any country and region, any CO2-offset from any producing asset. It will also accept any kind of other green attribute and any type of publuc support. <br>
-The buyer will be <code>0xfeebf1e463e39d09d5f8a40a6ed08d604ab01360 (John Doe Six from the Trader Organization)"</code> and the demand will be active between <code>1529928570 (25/06/2018)</code> and <code>1530403200 01/07/2018</code>. The buyer agrees to by certificates until he reaches <code>100000</code> Wh <code>daily</code>. The creator chose the matcher <code>0x585cc5c7829b1fd303ef5c019ed23815a205a59e</code>.
+We want to create a new demand. This is the very basic one, so all demand Properties are disabled <code>enabledProperties": [false, false, false, false, false, false, false, false, false, false]</code>. This demand will accept energy from any originator, any assetType, any compliance, any country and region, any CO2-offset from any producing asset. It will also accept any kind of other green attribute and any type of public support. <br>
+The buyer will be <code>0xfeebf1e463e39d09d5f8a40a6ed08d604ab01360 (John Doe Six from the Trader Organization)"</code> and the demand will be active between <code>1529928570 (25/06/2018)</code> and <code>1530403200 01/07/2018</code>. The buyer agrees to buy certificates until he reaches <code>100000</code> Wh <code>daily</code>. The creator chose the matcher <code>0x585cc5c7829b1fd303ef5c019ed23815a205a59e</code>.
 
 <code>
  <br>{
